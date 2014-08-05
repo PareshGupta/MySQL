@@ -1,3 +1,4 @@
+-- create database
 DROP DATABASE IF EXISTS Multibranch_Library;
 
 CREATE DATABASE Multibranch_Library;
@@ -43,7 +44,8 @@ CREATE TABLE Holdings
 ( Branch char(2),
   Title varchar(255),
   copies int,
-  PRIMARY KEY(Branch, Title)
+  FOREIGN KEY(Branch) REFERENCES Branch(BCode),
+  FOREIGN KEY(Title) REFERENCES Titles(Title)
 );
 
 -- insert data to holdings table
@@ -59,42 +61,42 @@ INSERT INTO Holdings(Branch, Title, copies) VALUES('B3', 'Susannah', 3);
 INSERT INTO Holdings(Branch, Title, copies) VALUES('B3', 'The Wife', 1);
 
 -- all library books published by  Macmillan
-SELECT Title FROM Titles WHERE Publisher = 'Macmillan';
-+----------+
-| Title    |
-+----------+
-| Susannah |
-| The Wife |
-+----------+
+SELECT Title, Author FROM Titles WHERE Publisher = 'Macmillan';
++----------+-----------+
+| Title    | Author    |
++----------+-----------+
+| Susannah | Ann Brown |
+| The Wife | Ann Brown |
++----------+-----------+
 
 -- branches that hold any books by Ann Brown (using a nested subquery)
-SELECT Branch FROM Holdings WHERE Title IN (SELECT Title FROM Titles WHERE Author = 'Ann Brown');
-+--------+
-| Branch |
-+--------+
-| B1     |
-| B2     |
-| B3     |
-| B3     |
-+--------+
+SELECT Branch, Title FROM Holdings WHERE Title IN (SELECT Title FROM Titles WHERE Author = 'Ann Brown');
++--------+----------+
+| Branch | Title    |
++--------+----------+
+| B1     | Susannah |
+| B2     | The Wife |
+| B3     | Susannah |
+| B3     | The Wife |
++--------+----------+
 
 -- branches that hold any books by Ann Brown (without using a nested subquery)
-SELECT Branch FROM Holdings, Titles WHERE Holdings.Title = Titles.Title AND Author = 'Ann Brown';
-+--------+
-| Branch |
-+--------+
-| B1     |
-| B3     |
-| B2     |
-| B3     |
-+--------+
+SELECT Branch, Holdings.Title FROM Holdings, Titles WHERE Holdings.Title = Titles.Title AND Author = 'Ann Brown';
++--------+----------+
+| Branch | Title    |
++--------+----------+
+| B1     | Susannah |
+| B3     | Susannah |
+| B2     | The Wife |
+| B3     | The Wife |
++--------+----------+
 
 -- the total number of books held at each branch.
-SELECT Branch, Count(*) AS 'Number OF BOOKS' FROM Holdings GROUP BY Branch;
-+--------+-----------------+
-| Branch | Number OF BOOKS |
-+--------+-----------------+
-| B1     |               3 |
-| B2     |               3 |
-| B3     |               4 |
-+--------+-----------------+
+SELECT Branch, Count(*) AS 'No_of_Books' FROM Holdings GROUP BY Branch;
++--------+-------------+
+| Branch | No_of_Books |
++--------+-------------+
+| B1     |           3 |
+| B2     |           3 |
+| B3     |           4 |
++--------+-------------+
