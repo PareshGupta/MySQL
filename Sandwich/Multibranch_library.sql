@@ -70,33 +70,33 @@ SELECT Title, Author FROM Titles WHERE Publisher = 'Macmillan';
 +----------+-----------+
 
 -- branches that hold any books by Ann Brown (using a nested subquery)
-SELECT Branch, Title FROM Holdings WHERE Title IN (SELECT Title FROM Titles WHERE Author = 'Ann Brown');
-+--------+----------+
-| Branch | Title    |
-+--------+----------+
-| B1     | Susannah |
-| B2     | The Wife |
-| B3     | Susannah |
-| B3     | The Wife |
-+--------+----------+
+SELECT Branch FROM Holdings WHERE Title IN (SELECT Title FROM Titles WHERE Author = 'Ann Brown');
++--------+
+| Branch |
++--------+
+| B1     |
+| B2     |
+| B3     |
+| B3     |
++--------+
 
 -- branches that hold any books by Ann Brown (without using a nested subquery)
-SELECT Branch, Holdings.Title FROM Holdings, Titles WHERE Holdings.Title = Titles.Title AND Author = 'Ann Brown';
-+--------+----------+
-| Branch | Title    |
-+--------+----------+
-| B1     | Susannah |
-| B3     | Susannah |
-| B2     | The Wife |
-| B3     | The Wife |
-+--------+----------+
+SELECT Branch FROM Holdings, Titles WHERE Holdings.Title = Titles.Title AND Author = 'Ann Brown';
++--------+
+| Branch |
++--------+
+| B1     |
+| B3     |
+| B2     |
+| B3     |
++--------+
 
 -- the total number of books held at each branch.
-SELECT Branch, Count(*) AS 'No_of_Books' FROM Holdings GROUP BY Branch;
+SELECT Branch, SUM(copies) AS 'No_of_Books' FROM Holdings GROUP BY Branch;
 +--------+-------------+
 | Branch | No_of_Books |
 +--------+-------------+
-| B1     |           3 |
-| B2     |           3 |
-| B3     |           4 |
+| B1     |           6 |
+| B2     |           9 |
+| B3     |           9 |
 +--------+-------------+
