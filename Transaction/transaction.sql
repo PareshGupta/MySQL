@@ -13,11 +13,11 @@ CREATE TABLE accounts
   PRIMARY KEY(id, account_no)
 );
 
-INSERT INTO accounts(account_no, balance) VALUES(119900480901, 25000);
-INSERT INTO accounts(account_no, balance) VALUES(119900480912, 15000);
-INSERT INTO accounts(account_no, balance) VALUES(119900480911, 15700);
-INSERT INTO accounts(account_no, balance) VALUES(119900480931, 10000);
-INSERT INTO accounts(account_no, balance) VALUES(119900480903, 50000);
+INSERT INTO accounts VALUES(1, 119900480901, 25000);
+INSERT INTO accounts VALUES(2, 119900480912, 15000);
+INSERT INTO accounts VALUES(3, 119900480911, 15700);
+INSERT INTO accounts VALUES(4, 119900480931, 10000);
+INSERT INTO accounts VALUES(5, 119900480903, 50000);
 
 +----+--------------+---------+
 | id | account_no   | balance |
@@ -36,19 +36,19 @@ CREATE TABLE users
 ( id int AUTO_INCREMENT,
   name varchar(255),
   email varchar(255),
-  account_no_id int,
+  account_id int,
   PRIMARY KEY(id),
-  FOREIGN KEY(account_no_id) REFERENCES accounts(id)
+  FOREIGN KEY(account_id) REFERENCES accounts(id)
 );
 
-INSERT INTO users(name, email, account_no_id) VALUES('Paresh', 'paresh@vinsol.com', 1);
-INSERT INTO users(name, email, account_no_id) VALUES('Ankur', 'ankur@vinsol.com', 2);
-INSERT INTO users(name, email, account_no_id) VALUES('Bipin', 'bipin@vinsol.com', 3);
-INSERT INTO users(name, email, account_no_id) VALUES('Tanny', 'tanny@vinsol.com', 4);
-INSERT INTO users(name, email, account_no_id) VALUES('Deva', 'deva@vinsol.com', 5);
+INSERT INTO users VALUES(1, 'Paresh', 'paresh@vinsol.com', 1);
+INSERT INTO users VALUES(2, 'Ankur', 'ankur@vinsol.com', 2);
+INSERT INTO users VALUES(3, 'Bipin', 'bipin@vinsol.com', 3);
+INSERT INTO users VALUES(4, 'Tanny', 'tanny@vinsol.com', 4);
+INSERT INTO users VALUES(5, 'Deva', 'deva@vinsol.com', 5);
 
 +----+--------+-------------------+---------------+
-| id | name   | email             | account_no_id |
+| id | name   | email             | account_id    |
 +----+--------+-------------------+---------------+
 |  1 | Paresh | paresh@vinsol.com |             1 |
 |  2 | Ankur  | ankur@vinsol.com  |             2 |
@@ -60,7 +60,7 @@ INSERT INTO users(name, email, account_no_id) VALUES('Deva', 'deva@vinsol.com', 
 -- userA is depositing Rs 1000/- his account
 BEGIN;
 SET autocommit = 0;
-UPDATE accounts INNER JOIN users ON accounts.id = users.account_no_id
+UPDATE accounts INNER JOIN users ON accounts.id = users.account_id
 SET accounts.balance = accounts.balance + 1000
 WHERE users.name = 'Paresh';
 COMMIT;
@@ -78,7 +78,7 @@ COMMIT;
 -- userA is withdrawing Rs 500/-
 BEGIN;
 SET autocommit = 0;
-UPDATE accounts INNER JOIN users ON accounts.id = users.account_no_id
+UPDATE accounts INNER JOIN users ON accounts.id = users.account_id
 SET accounts.balance = accounts.balance - 500
 WHERE users.name = 'Tanny';
 COMMIT;
@@ -97,12 +97,12 @@ COMMIT;
 BEGIN;
 SET autocommit = 0;
 UPDATE accounts INNER JOIN users
-ON accounts.id = users.account_no_id 
+ON accounts.id = users.account_id 
 SET accounts.balance = accounts.balance - 200
 WHERE users.name = 'Bipin';
 
 UPDATE accounts INNER JOIN users
-ON accounts.id = users.account_no_id
+ON accounts.id = users.account_id
 SET accounts.balance = accounts.balance + 200
 WHERE users.name = 'Deva';
 COMMIT;

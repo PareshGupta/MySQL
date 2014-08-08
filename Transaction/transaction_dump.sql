@@ -51,10 +51,10 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `account_no_id` int(11) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `account_no_id` (`account_no_id`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`account_no_id`) REFERENCES `accounts` (`id`)
+  KEY `account_id` (`account_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -77,4 +77,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-08-06 20:16:53
+-- Dump completed on 2014-08-08 10:15:38
