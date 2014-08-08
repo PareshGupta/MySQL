@@ -68,7 +68,17 @@ SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 3;
 +--------------+--------+
 
 --Find department that is giving highest commission
---select departments.name, employees.id from departments inner join employees where departments.id = employees.department_id group by  employees.id
+SELECT departments.name AS 'department with highest commission', SUM(commissions.amount) AS amount FROM departments
+INNER JOIN employees ON departments.id = employees.department_id 
+INNER JOIN commissions ON employees.id = commissions.employee_id
+GROUP BY departments.id
+ORDER BY amount DESC LIMIT 1;
++------------------------------------+--------+
+| department with highest commission | amount |
++------------------------------------+--------+
+| Banking                            |  13000 |
++------------------------------------+--------+
+
 
 --Find employees getting commission more than 3000
 SELECT GROUP_CONCAT(employees.name), commissions.amount 
