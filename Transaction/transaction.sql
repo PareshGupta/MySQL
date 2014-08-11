@@ -10,7 +10,7 @@ CREATE TABLE accounts
 ( id int AUTO_INCREMENT,
   account_no bigint,
   balance float,
-  PRIMARY KEY(id, account_no)
+  PRIMARY KEY(id)
 );
 
 INSERT INTO accounts VALUES(1, 119900480901, 25000);
